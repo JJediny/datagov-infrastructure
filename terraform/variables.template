@@ -1,0 +1,50 @@
+variable "aws" {
+    description = "AWS-wide variables"
+    default = {
+        profile = "AWS_PROFILE"
+    }
+}
+
+variable "region" {
+    description = "AWS region to work in"
+    default = "AWS_REGION"
+}
+variable "vpc_id" {
+    description = "AWS VPC to manage"
+    default = {
+        us-east-1 = "VPC_ID"
+    }
+}
+
+variable "subnet_id" {
+    description = "AWS Subnet ID to use"
+    default = {
+        us-east-1_publicA = "SUBNET_ID"
+        us-east-1_publicB = "SUBNET_ID"
+        us-east-1_privateA = "SUBNET_ID"
+        us-east-1_publicB = "SUBNET_ID"
+    }
+}
+
+variable "rancher_amis" {
+    description = "RancherOS AMIs"
+     default = {
+        us-east-1 = "ami-2504524f"
+        us-west-1 = "ami-0dd6bd6d"
+        us-west-2 = "ami-0a0d136b"
+     }
+}
+
+
+variable "jump_host" {
+description = "Jump Host to connect to in order to run commands"
+default = {
+    hostname = "JUMPHOST_IP"
+    user = "ubuntu"
+}
+}
+
+variable "start_rancher" {
+    description = "Command to start the Rancher Management Platform"
+    default = "sudo docker run -d --restart=always -p 8080:8080 --name rancher_management rancher/server"
+}
