@@ -55,6 +55,12 @@ variable "rds_pass" {
 	default = "RDS_PASS"
 }
 
+variable "resdis_size" {
+	description "ElastiCache size for redis"
+	default = "cache.m3.medium"
+}
+
+
 
 variable "jump_host" {
 description = "Jump Host to connect to in order to run commands"

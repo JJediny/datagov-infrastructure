@@ -140,6 +140,21 @@ resource "aws_rds_instance" "rancher_db" {
 	}
 }
 
+resource "aws_elasticache_cluster" "rancher" {
+    cluster_id = "datagov-rancher"
+    engine = "redis"
+    node_type = "${var.redis_size}"
+    port = 6379
+    num_cache_nodes = 1
+    parameter_group_name = "default.redis2.8"
+    subnet_group_name = "${lookup(var.subnet_id, "us-east-1_privateA")}"
+    security_group_names = ["${aws_security_group.rancher.id}"]
+    tags = {
+    	Name = "Rancher Redis"
+    }
+}
+
+
 resource "aws_instance" "rancher_main" {
     ami = "${lookup(var.rancher_amis, var.region)}"
     instance_type = "m3.xlarge"
