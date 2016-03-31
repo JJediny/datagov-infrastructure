@@ -35,6 +35,26 @@ variable "rancher_amis" {
      }
 }
 
+variable "rds_size" {
+	description = "AWS DB Instance Size"
+	default = "db.t2.medium"
+}
+
+variable "rds_disk_size" { 
+	description = "How much disk space to allocate to RDS? (in GB)"
+	default = 100
+}
+
+variable "rds_user" {
+	description = "Username for admin user of RDS"
+	default = "RDS_USER"
+}
+
+variable "rds_pass" {
+	description = "Password for admin user of RDS"
+	default = "RDS_PASS"
+}
+
 
 variable "jump_host" {
 description = "Jump Host to connect to in order to run commands"
