@@ -1,30 +1,8 @@
-variable "aws" {
-    description = "AWS-wide variables"
-    default = {
-        profile = "AWS_PROFILE"
-    }
+variable "environment" {
+	description = "Environment to manage (dev/prod/etc)"
+	default = "dev"
 }
 
-variable "region" {
-    description = "AWS region to work in"
-    default = "AWS_REGION"
-}
-variable "vpc_id" {
-    description = "AWS VPC to manage"
-    default = {
-        us-east-1 = "VPC_ID"
-    }
-}
-
-variable "subnet_id" {
-    description = "AWS Subnet ID to use"
-    default = {
-        us-east-1_publicA = "SUBNET_ID"
-        us-east-1_publicB = "SUBNET_ID"
-        us-east-1_privateA = "SUBNET_ID"
-        us-east-1_publicB = "SUBNET_ID"
-    }
-}
 
 variable "rancher_amis" {
     description = "RancherOS AMIs"
@@ -35,40 +13,19 @@ variable "rancher_amis" {
      }
 }
 
-variable "rds_size" {
-	description = "AWS DB Instance Size"
-	default = "db.t2.medium"
+variable "public_key_path" {
+  description = <<DESCRIPTION
+Path to the SSH public key to be used for authentication.
+Ensure this keypair is added to your local SSH agent so provisioners can
+connect.
+Example: ~/.ssh/terraform.pub
+DESCRIPTION
 }
 
-variable "rds_disk_size" { 
-	description = "How much disk space to allocate to RDS? (in GB)"
-	default = 100
+variable "key_name" {
+  description = "Desired name of AWS key pair"
 }
 
-variable "rds_user" {
-	description = "Username for admin user of RDS"
-	default = "RDS_USER"
-}
-
-variable "rds_pass" {
-	description = "Password for admin user of RDS"
-	default = "RDS_PASS"
-}
-
-variable "resdis_size" {
-	description "ElastiCache size for redis"
-	default = "cache.m3.medium"
-}
-
-
-
-variable "jump_host" {
-description = "Jump Host to connect to in order to run commands"
-default = {
-    hostname = "JUMPHOST_IP"
-    user = "ubuntu"
-}
-}
 
 variable "start_rancher" {
     description = "Command to start the Rancher Management Platform"
