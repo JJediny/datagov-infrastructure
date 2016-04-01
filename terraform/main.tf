@@ -44,7 +44,7 @@ resource "aws_key_pair" "auth" {
 
 # CREATE JUMP HOST
 resource "aws_instance" "datagov_jump" {
-    ami = "${lookup(var.rancher_amis, var.region)}"
+    ami = "${lookup(var.ubuntu_amis, var.region)}"
     instance_type = "m3.xlarge"
     key_name = "${aws_key_pair.auth.id}"
     vpc_security_group_ids = ["${aws_security_group.datagov-jumphost.id}"]
