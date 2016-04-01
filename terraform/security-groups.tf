@@ -9,7 +9,7 @@ resource "aws_security_group" "rancher_elb_sg" {
         from_port = 80
         to_port = 80
         protocol = "tcp"
-        cidr_blocks = ["${split(",", var.aquilent_ips)}","${split(",", var.gsa_ips)}"]
+        cidr_blocks = ["${split(",", var.aquilent-ips)}","${split(",", var.gsa-ips)}"]
     }
     egress {
       from_port = 0
@@ -26,8 +26,8 @@ resource "aws_security_group" "datagov_jumphost" {
     ingress {
         from_port = 22
         to_port = 22
-        protocol = tcp
-        cidr_blocks = ["${split(",", var.aquilent_ips)}","${split(",", var.gsa_ips)}"]
+        protocol = "tcp"
+        cidr_blocks = ["${split(",", var.aquilent-ips)}","${split(",", var.gsa-ips)}"]
     }
      egress {
       from_port = 0

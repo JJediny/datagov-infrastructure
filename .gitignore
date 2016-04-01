@@ -1,0 +1,8 @@
+# Ignore populated variable files
+terraform/terraform.tfvars
+terraform/variables.tf
+terraform/rds-variables.tf
+terraform/sg-variables.tf
+terraform/vpc-variables.tf
+terraform/*.state
+terraform/*.plan

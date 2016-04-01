@@ -1,12 +1,12 @@
 provider "aws" {
     region = "${var.region}"
-    profile = "${lookup(var.aws, "profile")}"
+    profile = "${var.aws_profile}"
 }
 
 # CREATE RANCHER ELB
 resource "aws_elb" "rancher_elb" {
     name = "rancher-elb"
-    subnets = ["${lookup(var.subnet_id, "us-east-1_publicA")}", "${lookup(var.subnet_id, "us-east-1_publicB")}" ]
+    subnets = ["${aws_subnet.datagov-publica.id}", "${aws_subnet.datagov-publicb.id}"]
     security_groups = ["${aws_security_group.rancher_elb_sg.id}"]
     instances = ["${aws_instance.rancher_main.id}"]
     listener = {
@@ -35,20 +35,14 @@ resource "aws_elb" "rancher_elb" {
     }
 }
 
-# SETUP AWS KEY PAIR
-resource "aws_key_pair" "auth" {
-  key_name   = "${var.key_name}"
-  public_key = "${file(var.public_key_path)}"
-}
-
 
 # CREATE JUMP HOST
 resource "aws_instance" "datagov_jump" {
     ami = "${lookup(var.ubuntu_amis, var.region)}"
     instance_type = "m3.xlarge"
-    key_name = "${aws_key_pair.auth.id}"
-    vpc_security_group_ids = ["${aws_security_group.datagov-jumphost.id}"]
-    subnet_id = "${datagov-publica.id}"
+    key_name = "${var.key_name}"
+    vpc_security_group_ids = ["${aws_security_group.datagov_jumphost.id}"]
+    subnet_id = "${aws_subnet.datagov-publica.id}"
     root_block_device = {
         volume_type = "gp2"
         volume_size = 100
@@ -58,7 +52,7 @@ resource "aws_instance" "datagov_jump" {
         virtual_name = "ephemeral0"
     }
     tags = {
-        Name = "rancher_main"
+        Name = "datagov_jumphost"
         client = "datagov"
     }
 }
@@ -73,9 +67,9 @@ resource "aws_eip" "jump" {
 resource "aws_instance" "rancher_main" {
     ami = "${lookup(var.rancher_amis, var.region)}"
     instance_type = "m3.xlarge"
-    key_name = "${aws_key_pair.auth.id}"
+    key_name = "${var.key_name}"
     vpc_security_group_ids = ["${aws_security_group.rancher.id}"]
-    subnet_id = "${datagov-privatea)}"
+    subnet_id = "${aws_subnet.datagov-privatea.id}"
     root_block_device = {
         volume_type = "gp2"
         volume_size = 100
@@ -91,10 +85,10 @@ resource "aws_instance" "rancher_main" {
 connection {
         user = "rancher"
         host = "${aws_instance.rancher_main.private_ip}"
-        private_key = "${file("/PATH/TO/PEM_FILE")}"
+        private_key = "${file("~/datagov-rancher.pem")}"
         bastion_host = "${aws_instance.datagov_jump.public_dns}"
         bastion_user = "ubuntu"
-        bastion_private_key = "${file("/PATH/TO/PEM_FILE")}"
+        bastion_private_key = "${file("~/datagov-rancher.pem")}"
     }
     provisioner "remote-exec" {
 

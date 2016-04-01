@@ -7,7 +7,7 @@ output "rancher_main_ip" {
 }
 
 output "rancher_rds_endpoint" {
-	value = "${aws_rds_instance.rancher_db.endpoint}"
+	value = "${aws_db_instance.rancher_db.endpoint}"
 }
 
 output "rancher_elb" {

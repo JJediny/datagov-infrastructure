@@ -61,8 +61,8 @@ resource "aws_internet_gateway" "datagov-igw" {
 # CREATE NAT-GATEWAY
 resource "aws_nat_gateway" "datagov-natgw" {
     allocation_id = "${aws_eip.nat.id}"
-    subnet_id = "${aws_subnet.datagov-publicA.id}"
-    depends_on = ["aws_internet_gateway.datagov"]
+    subnet_id = "${aws_subnet.datagov-publica.id}"
+    depends_on = ["aws_internet_gateway.datagov-igw"]
 }
 
 # CREATE ROUTE TABLES
@@ -81,7 +81,7 @@ resource "aws_route_table" "private" {
   vpc_id         = "${aws_vpc.datagov.id}"
   route = {
 	  cidr_block = "0.0.0.0/0"
-	  nat_gateway_id             = "${aws_internet_gateway.datagov-natgw.id}"
+	  nat_gateway_id             = "${aws_nat_gateway.datagov-natgw.id}"
   }
    tags {
         Name = "Data.gov - ${var.environment} - Private Route"

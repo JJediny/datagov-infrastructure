@@ -1,9 +1,8 @@
 
-variable "aws" {
-    description = "AWS-wide variables"
-    default = {
-        profile = "AWS_PROFILE"
-    }
+variable "aws_profile" {
+    description = "AWS Profile to use from ~/.aws/credentials"
+    default =  "AWS_PROFILE"
+
 }
 
 variable "region" {
